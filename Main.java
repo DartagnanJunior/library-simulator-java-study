@@ -26,7 +26,15 @@ public class Main {
 
         biblioteca.adicionarLivros(livro1, livro2, livro3, livro4, livro5, livro6, livro7, livro8);
 
-        System.out.printf("Autores: ", biblioteca.listarAutores());
-        System.out.printf("Livros: ", biblioteca.listarLivros());
+        var autores = biblioteca.listarAutores();
+        var livros = biblioteca.listarLivros();
+        System.out.printf("Autores: " );
+        for (Autor a : autores) {
+            System.out.println(a.getNome());
+        }
+        System.out.printf("Livros: ");
+        for (Livro l : livros) {
+            System.out.println(l.getTitulo());
+        }
     }
 }
