@@ -8,14 +8,19 @@ public class Livro {
     private Boolean disponivel;
     private Date dataCadastro;
     private Date dataAtualizacao;
+    private static int contadorId = 0;
 
-    public Livro(Integer id, String autor, String titulo) {
-        this.id = id;
+    public Livro( String autor, String titulo) {
+        this.id = gerarIdUnico();
         this.titulo = titulo;
         this.autor = autor;
         this.disponivel = true;
         this.dataCadastro = new Date();
         this.dataAtualizacao = new Date();
+    }
+
+    private static synchronized int gerarIdUnico() {
+        return ++contadorId;
     }
 
     public Integer getId() {
