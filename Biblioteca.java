@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -6,7 +7,6 @@ import java.util.stream.Collectors;
 public class Biblioteca {
     private List<Livro> livros = new ArrayList<>();
     private List<Autor> autores = new ArrayList<>();
-//    private List<Emprestimo> emprestimos = new ArrayList<>();
 
     public void adicionarAutor(Autor a) {
         this.autores.add(a);
@@ -35,6 +35,21 @@ public class Biblioteca {
         return livros.stream()
                 .filter(Livro::getDisponivel)
                 .collect(Collectors.toList());
+    }
+
+    public boolean marcarLivroComoNaoDisponivel(int id) {
+        Optional<Livro> livroOptional = livros.stream()
+                .filter(livro -> livro.getId() == id && livro.getDisponivel())
+                .findFirst();
+
+        if (livroOptional.isPresent()) {
+            Livro livro = livroOptional.get();
+            livro.setDisponivel(false);
+            livro.setDataAtualizacao(new Date());
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

@@ -1,3 +1,4 @@
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Livro {
@@ -10,7 +11,7 @@ public class Livro {
     private Date dataAtualizacao;
     private static int contadorId = 0;
 
-    public Livro( String autor, String titulo) {
+    public Livro(String autor, String titulo) {
         this.id = gerarIdUnico();
         this.titulo = titulo;
         this.autor = autor;
@@ -39,16 +40,8 @@ public class Livro {
         return disponivel;
     }
 
-    public Date getDataCadastro() {
-        return dataCadastro;
-    }
-
-    public Date getDataAtualizacao() {
-        return dataAtualizacao;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public void setDataAtualizacao(Date data) {
+        this.dataAtualizacao = data;
     }
 
     public void setDisponivel(Boolean disponivel) {
@@ -57,12 +50,8 @@ public class Livro {
 
     @Override
     public String toString() {
-        return "Livro{" +
-                ", titulo='" + titulo + '\'' +
-                ", autor='" + autor + '\'' +
-                ", disponivel=" + disponivel +
-                ", dataCadastro=" + dataCadastro +
-                ", dataAtualizacao=" + dataAtualizacao +
-                '}';
+        SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
+        String dataFormatada = formatoData.format(dataAtualizacao);
+        return String.format("Livro: %d - %s, %s, %s, data de atualização: %s", id, titulo, autor, disponivel, dataFormatada);
     }
 }

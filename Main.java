@@ -1,6 +1,7 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -9,52 +10,16 @@ public class Main {
     public static SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
 
     public static void main(String[] args) {
-//
-
-//
-//        // Evoluir para receber autores e livros dinamico
-//
-//        Autor georgeMartin = new Autor(3, "George R.R. Martin", new Date());
-//        Autor agathaChristie = new Autor(4, "Agatha Christie", new Date());
-//        Autor isaacAsimov = new Autor(5, "Isaac Asimov", new Date());
-//        Autor stephenKing = new Autor(6, "Stephen King", new Date());
-//
-//        biblioteca.adicionarAutores(georgeMartin, agathaChristie, isaacAsimov, stephenKing);
-//
-//        Livro livro1 = new Livro(1, georgeMartin.getNome(), "A Guerra dos Tronos");
-//        Livro livro2 = new Livro(2, georgeMartin.getNome(), "A Fúria dos Reis");
-//        Livro livro3 = new Livro(3, agathaChristie.getNome(), "Assassinato no Expresso do Oriente");
-//        Livro livro4 = new Livro(4, agathaChristie.getNome(), "O Misterioso Caso de Styles");
-//        Livro livro5 = new Livro(5, isaacAsimov.getNome(), "Fundação");
-//        Livro livro6 = new Livro(6, isaacAsimov.getNome(), "Eu, Robô");
-//        Livro livro7 = new Livro(7, stephenKing.getNome(), "O Iluminado");
-//        Livro livro8 = new Livro(8, stephenKing.getNome(), "It: A Coisa");
-//
-//        biblioteca.adicionarLivros(livro1, livro2, livro3, livro4, livro5, livro6, livro7, livro8);
-//
-//        var autores = biblioteca.listarAutores();
-//        var livros = biblioteca.listarLivros();
-//
-//        System.out.printf("Autores: ");
-//        for (Autor a : autores) {
-//            System.out.println(a.getNome());
-//        }
-//        System.out.printf("Livros: ");
-//        for (Livro l : livros) {
-//            System.out.println(l.getTitulo());
-//        }
 
         while (true) {
             System.out.println("\n---- Menu Biblioteca ----");
-            System.out.println("1. Cadastrar usuário");
-            System.out.println("2. Listar usuários");
-            System.out.println("3. Cadastrar autor");
+            System.out.println("1. Listar livros");
+            System.out.println("2. Listar livros disponíveis para empréstimo");
+            System.out.println("3. Cadastrar livro");
             System.out.println("4. Listar autores");
-            System.out.println("5. Cadastrar livro");
-            System.out.println("6. Listar livros");
-            System.out.println("7. Listar livros disponíveis para empréstimo");
-            System.out.println("8. Escolher livro para empréstimo");
-            System.out.println("9. Sair");
+            System.out.println("5. Cadastrar autor");
+            System.out.println("6. Escolher livro para empréstimo");
+            System.out.println("7. Sair");
             System.out.print("Escolha uma opção: ");
 
             int opcao = scanner.nextInt();
@@ -62,30 +27,24 @@ public class Main {
 
             switch (opcao) {
                 case 1:
-//                    cadastrarUsuario();
+                    listarLivros();
                     break;
                 case 2:
-//                    listarUsuarios();
+                    listarLivrosDisponiveis();
                     break;
                 case 3:
-                    cadastrarAutor();
+                    cadastrarLivro();
                     break;
                 case 4:
                     listarAutores();
                     break;
                 case 5:
-                    cadastrarLivro();
+                    cadastrarAutor();
                     break;
                 case 6:
-                    listarLivros();
+                    escolherLivroParaEmprestimo();
                     break;
                 case 7:
-                    listarLivrosDisponiveis();
-                    break;
-                case 8:
-//                    escolherLivroParaEmprestimo();
-                    break;
-                case 9:
                     System.out.println("Saindo...");
                     return;
                 default:
@@ -162,7 +121,7 @@ public class Main {
         System.out.printf("Livro: %s cadastrado com sucesso!\n", titulo);
     }
 
-    public static void listarLivros(){
+    public static void listarLivros() {
         System.out.println("\n---- Lista de Livros ----");
         if (biblioteca.listarLivros().isEmpty()) {
             System.out.println("Nenhum livro cadastrado.");
@@ -171,12 +130,36 @@ public class Main {
         }
     }
 
-    public static void listarLivrosDisponiveis(){
+    public static void listarLivrosDisponiveis() {
         System.out.println("\n---- Lista de livros disponíveis para emprestimo ----");
-        if(biblioteca.listarLivrosDisponiveis().isEmpty()){
+        if (biblioteca.listarLivrosDisponiveis().isEmpty()) {
             System.out.println("Não há livros para emprestimo.");
         } else {
             biblioteca.listarLivrosDisponiveis().forEach(livro -> System.out.println(livro));
+        }
+    }
+
+    public static void escolherLivroParaEmprestimo() {
+        System.out.println("\n---- Escolher Livro para Empréstimo ----");
+
+        List<Livro> livrosDisponiveis = biblioteca.listarLivrosDisponiveis();
+        if (livrosDisponiveis.isEmpty()) {
+            System.out.println("Nenhum livro disponível para empréstimo.");
+            return;
+        }
+
+        System.out.println("Livros disponíveis:");
+        livrosDisponiveis.forEach(livro -> System.out.printf("ID: %d - Título: %s, autor: %s\n", livro.getId(), livro.getTitulo(), livro.getAutor()));
+
+        System.out.print("Digite o ID do livro que deseja emprestar: ");
+        int idLivro = scanner.nextInt();
+        scanner.nextLine();
+
+        boolean sucesso = biblioteca.marcarLivroComoNaoDisponivel(idLivro);
+        if (sucesso) {
+            System.out.println("Livro emprestado com sucesso!");
+        } else {
+            System.out.println("Livro não encontrado ou já emprestado.");
         }
     }
 

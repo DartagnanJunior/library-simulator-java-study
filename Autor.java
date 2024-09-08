@@ -25,10 +25,6 @@ public class Autor {
         return nome;
     }
 
-    public Date getDataNascimento() {
-        return dataNascimento;
-    }
-
     @Override
     public String toString() {
         SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
